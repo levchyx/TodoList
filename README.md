@@ -1,5 +1,7 @@
 # Getting Started with Create React App
 
+The purspose of this pet project is to show the todo list with ability to create new TODO, display separately pending and completed TODOs, toggle check state of TODO, ability to delete TODO, display empty state when nothing is present, save all state's changes to local storage.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
