@@ -51,7 +51,7 @@ function App() {
         <Layout>
             <ListWrapper>
                 <AddInput onAdd={addTodo}/>
-                {!todos?.length ? <EmptyState/> :
+                {!todos.length ? <EmptyState/> :
                     <div className="flex flex-col space-y-2">
                         {pending.length > 0 && (
                             <>
