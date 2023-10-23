@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {Layout, Container, AddInput, EmptyState, ListWrapper} from "./components";
 import {Status, TodoItemProps} from "./types";
 import { v4 as uuid } from 'uuid';
@@ -11,30 +11,29 @@ const defaultTodos: TodoItemProps[] = [
     {id: uuid(), name: "Daily meeting", checked: false},
 ]
 
-
 function App() {
     const [todos, setTodos] = useState<TodoItemProps[]>(getSavedTodos(defaultTodos))
 
-    function addTodo(name: string) {
+    const addTodo = useCallback((name: string) => {
         const newTodo =  {id: uuid(), name, checked: false}
         setTodos(prevState => [
             newTodo,
             ...prevState
         ])
         saveTodos([newTodo, ...todos])
-    }
+    }, [todos])
 
-    function toggleCheck(id: string) {
+    const toggleCheck = useCallback((id: string) => {
         const updatedTodos = todos.map((todo) => todo.id === id ? {...todo, checked: !todo.checked} : todo)
         saveTodos(updatedTodos)
         setTodos(updatedTodos)
-    }
+    }, [todos])
 
-    function deleteTodo(id: string) {
+    const deleteTodo = useCallback((id: string) => {
         const updatedTodos = todos.filter((todo) => todo.id !== id)
         saveTodos(updatedTodos)
         setTodos(updatedTodos)
-    }
+    }, [todos])
 
     const [pending, completed] = partition(todos, todo => !todo.checked)
 
