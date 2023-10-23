@@ -1,7 +1,6 @@
 import React from "react";
 import {LayoutProps} from "../types";
 
-
 export function Layout ({children}: LayoutProps) {
     return (
         <div className="flex flex-col h-screen w-screen bg-gray-900 p-20 items-center">

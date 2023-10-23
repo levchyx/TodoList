@@ -1,10 +1,19 @@
+import {ListWrapperProps, Status} from "../types";
+import {TodoItem} from "./TodoItem";
 import React from "react";
-import {LayoutProps} from "../types";
+import clsx from "clsx";
 
-export function ListWrapper ({children}: LayoutProps) {
+export function ListWrapper({label, list, toggleCheck, deleteTodo}: ListWrapperProps) {
     return (
-        <div className="flex flex-col max-w-sm w-full mt-8 p-4 bg-gray-400 rounded-md space-y-2">
-            {children}
-        </div>
+        <>
+            <span className={clsx("font-bold text-xs text-green-700", {
+                '!text-yellow-700': label === Status.Pending
+            })}>
+                {label}
+            </span>
+            {list.map((todo) => (
+                <TodoItem {...todo} toggleCheck={toggleCheck} deleteTodo={deleteTodo} key={todo.id}/>
+            ))}
+        </>
     )
 }

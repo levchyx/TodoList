@@ -1,8 +1,9 @@
 import React, {useState} from "react";
-import {Layout, TodoItem, ListWrapper, AddInput, EmptyState} from "./components";
-import {TodoItemProps} from "./types";
+import {Layout, Container, AddInput, EmptyState, ListWrapper} from "./components";
+import {Status, TodoItemProps} from "./types";
 import { v4 as uuid } from 'uuid';
 import {partition} from "lodash";
+import {getSavedTodos, saveTodos} from "./utils";
 
 const defaultTodos: TodoItemProps[] = [
     {id: uuid(), name: "Morning routine", checked: false},
@@ -10,16 +11,6 @@ const defaultTodos: TodoItemProps[] = [
     {id: uuid(), name: "Daily meeting", checked: false},
 ]
 
-const savedTodosKey = 'saved-todos'
-
-function saveTodos(todos: TodoItemProps[]) {
-    localStorage.setItem(savedTodosKey, JSON.stringify(todos))
-}
-
-function getSavedTodos(initialValue: TodoItemProps[]) {
-    const saved = localStorage.getItem(savedTodosKey)
-    return saved ? JSON.parse(saved) : initialValue
-}
 
 function App() {
     const [todos, setTodos] = useState<TodoItemProps[]>(getSavedTodos(defaultTodos))
@@ -49,30 +40,16 @@ function App() {
 
     return (
         <Layout>
-            <ListWrapper>
+            <Container>
                 <AddInput onAdd={addTodo}/>
-                {!todos.length ? <EmptyState/> :
-                    <div className="flex flex-col space-y-2">
-                        {pending.length > 0 && (
-                            <>
-                                <span className="font-bold text-xs text-yellow-700">Pending</span>
-                                {pending.map((todo) => (
-                                    <TodoItem {...todo} toggleCheck={toggleCheck} deleteTodo={deleteTodo} key={todo.id}/>
-                                ))}
-                            </>
-
-                        )}
-                        {completed.length > 0 && (
-                            <>
-                                <span className="font-bold text-xs text-green-700">Completed</span>
-                                {completed.map((todo) => (
-                                    <TodoItem {...todo} toggleCheck={toggleCheck} deleteTodo={deleteTodo} key={todo.id}/>
-                                ))}
-                            </>
-
-                        )}
-                    </div>}
-            </ListWrapper>
+                {!todos.length
+                    ? <EmptyState/>
+                    : <div className="flex flex-col space-y-2">
+                        {pending.length > 0 && <ListWrapper label={Status.Pending} list={pending} deleteTodo={deleteTodo} toggleCheck={toggleCheck}/>}
+                        {completed.length > 0 && <ListWrapper label={Status.Completed} list={completed} deleteTodo={deleteTodo} toggleCheck={toggleCheck}/>}
+                    </div>
+                }
+            </Container>
         </Layout>
     );
 }
