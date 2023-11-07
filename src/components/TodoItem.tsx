@@ -1,11 +1,11 @@
 import {TodoProps} from "../types";
-import {CheckIcon, TrashIcon} from "@heroicons/react/20/solid";
+import {CheckIcon, StarIcon, TrashIcon} from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import React, {useState} from "react";
 import {PreventDeleteModal} from "./PreventDeleteModal";
 
 
-export function TodoItem ({id, name, checked, toggleCheck, deleteTodo}: TodoProps) {
+export function TodoItem ({id, name, checked, toggleCheck, deleteTodo, toggleFavourite, favourite, setLastFav}: TodoProps) {
     const [openDelete, setOpenDelete] = useState<boolean>(false)
     return (
         <>
@@ -24,9 +24,19 @@ export function TodoItem ({id, name, checked, toggleCheck, deleteTodo}: TodoProp
                         {name}
                     </div>
                 </div>
-                <button onClick={() => setOpenDelete(true)}>
-                    <TrashIcon className="h-5 w-5 text-red-600 transition-all duration-150 hover:text-red-500"/>
-                </button>
+                <div className="flex items-center">
+                    <button className="mr-2" onClick={() => {
+                        toggleFavourite(id)
+                        setLastFav(id)
+                    }}>
+                        <StarIcon className={clsx("h-5 w-5 transition-all duration-150", {
+                            'text-yellow-500': favourite
+                        })}/>
+                    </button>
+                    <button onClick={() => setOpenDelete(true)}>
+                        <TrashIcon className="h-5 w-5 text-red-600 transition-all duration-150 hover:text-red-500"/>
+                    </button>
+                </div>
             </div>
             <PreventDeleteModal
                 name={name}

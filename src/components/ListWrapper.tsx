@@ -3,7 +3,7 @@ import {TodoItem} from "./TodoItem";
 import React from "react";
 import clsx from "clsx";
 
-export function ListWrapper({label, list, toggleCheck, deleteTodo}: ListWrapperProps) {
+export function ListWrapper({label, list, toggleCheck, deleteTodo, toggleFavourite, setLastFav}: ListWrapperProps) {
     return (
         <>
             <span className={clsx("font-bold text-xs text-green-700", {
@@ -12,7 +12,7 @@ export function ListWrapper({label, list, toggleCheck, deleteTodo}: ListWrapperP
                 {label}
             </span>
             {list.map((todo) => (
-                <TodoItem {...todo} toggleCheck={toggleCheck} deleteTodo={deleteTodo} key={todo.id}/>
+                <TodoItem {...todo} setLastFav={setLastFav} toggleFavourite={toggleFavourite} toggleCheck={toggleCheck} deleteTodo={deleteTodo} key={todo.id}/>
             ))}
         </>
     )
